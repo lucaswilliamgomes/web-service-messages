@@ -107,12 +107,28 @@
     </div>
     <div class="btns">
         <button class="btn" onclick="window.history.back()">Voltar</button>
-        <button class="btn_delete" onclick="">Deletar Mensagem</button>
+        <button class="btn_delete" onclick="deleteMessage()">Deletar Mensagem</button>
         <button class="btn_forward" onclick="">Encaminhar Mensagem</button>
     </div>
 </div>
 <script>
+    function deleteMessage() {
+        const currentURL = window.location.href;
+        console.log(currentURL)
+        let xhr = new XMLHttpRequest();
+        xhr.open("DELETE", currentURL);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function() {
+            if (xhr.status === 204) {
+                alert("Mensagem deletada!");
+                window.history.back();
+            } else {
+                alert('Ocorreu um erro ao deletar a mensagem.');
+            }
+        };
 
+        xhr.send();
+    }
 </script>
 </body>
 </html>

@@ -1,32 +1,23 @@
-[{
-    "id": 1,
-    "name_sender": "lucas",
-    "name_receiver": "matheus",
-    "subject": "Conversa simples",
-    "body": "Olá Matheus, tudo bem?"
-}, {
-    "id": 2,
-    "name_sender": "matheus",
-    "name_receiver": "lucas",
-    "subject": "Conversa simples",
-    "body": "Olá Lucas, tudo bem e com vc?"
-}, {
-    "id": 3,
-    "name_sender": "matheus",
-    "name_receiver": "lucas",
-    "subject": "Conversa simples",
-    "body": "Olá Lucas, tudo bem e com vc?"
-}, {
-    "id": 4,
-    "name_sender": "matheus",
-    "name_receiver": "lucas",
-    "subject": "Conversa simples",
-    "body": "Olá Lucas, tudo bem e com vc?"
-}, {
-    "id": 5,
-    "name_sender": "matheus",
-    "name_receiver": "lucas",
-    "subject": "Conversa simples",
-    "body": "Olá Lucas, tudo bem e com vc?"
-}]
-
+[
+    {
+        "id": 1,
+        "name_sender": "lucas",
+        "name_receiver": "matheus",
+        "subject": "Conversa simples",
+        "body": "Ol\u00e1 Matheus, tudo bem?"
+    },
+    {
+        "id": 2,
+        "name_sender": "matheus",
+        "name_receiver": "lucas",
+        "subject": "Conversa simples dasd asd",
+        "body": "Ol\u00e1 Lucas, tudo bem e com vc?"
+    },
+    {
+        "id": 5,
+        "name_sender": "matheus",
+        "name_receiver": "lucas",
+        "subject": "Conversa simples dads adasd",
+        "body": "Ol\u00e1 Lucas, tudo bem e com vc?"
+    }
+]

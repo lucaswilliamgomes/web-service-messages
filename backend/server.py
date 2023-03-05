@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -52,7 +52,7 @@ def message(getMessages: GetMessages):
 
 
 @app.get("/message/{message_id}", response_class=HTMLResponse)
-def message_details(request: Request, message_id: int):
+async def message_details(request: Request, message_id: int):
     response = utils.search_message_by_id(message_id)
     if (response):
         return templates.TemplateResponse("message_detail.html", {
@@ -63,6 +63,15 @@ def message_details(request: Request, message_id: int):
             "subject": response.get("subject"),
             "body": response.get("body")
         })
+    else:
+        raise HTTPException(status_code=404, detail="Item not found")
+
+
+@app.delete("/message/{message_id}")
+async def message_delete(message_id: int):
+    response = utils.delete_message_by_id(message_id)
+    if (response):
+        return Response(status_code=204)
     else:
         raise HTTPException(status_code=404, detail="Item not found")
 

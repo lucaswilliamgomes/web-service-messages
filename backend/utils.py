@@ -51,4 +51,20 @@ def search_message_by_id(id_message):
     
     return None
 
+def delete_message_by_id(id_message):
+    deleted = False
+    with open("./data/messages.json", "r") as jsonData:
+        data = json.load(jsonData)
+
+    for i, message in enumerate(data):
+        if message['id'] == id_message:
+            data.pop(i)
+            deleted = True
+            break
+
+    with open('./data/messages.json', 'w') as f:
+        json.dump(data, f, indent=4)
+    
+    return deleted
+
     
