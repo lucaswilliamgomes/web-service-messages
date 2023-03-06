@@ -48,20 +48,22 @@ def message(getMessages: GetMessages):
     if (response):
         return response
     else: 
-        raise HTTPException(status_code=404, detail="Item not found")
+        return []
 
 
-@app.get("/message/{message_id}", response_class=HTMLResponse)
-async def message_details(request: Request, message_id: int):
+@app.get("/message/{user_name}/{message_id}", response_class=HTMLResponse)
+async def message_details(request: Request, message_id: int, user_name: str):
     response = utils.search_message_by_id(message_id)
     if (response):
         return templates.TemplateResponse("message_detail.html", {
             "request" : request,
             "id": response.get("id"),
+            "user_name": user_name,
             "sender": response.get("name_sender"),
             "receiver": response.get("name_receiver"),
             "subject": response.get("subject"),
-            "body": response.get("body")
+            "body": response.get("body"),
+            "readonly": "readonly"
         })
     else:
         raise HTTPException(status_code=404, detail="Item not found")
@@ -74,6 +76,25 @@ async def message_delete(message_id: int):
         return Response(status_code=204)
     else:
         raise HTTPException(status_code=404, detail="Item not found")
+
+
+# Criar um endPoint get new_message que
+# manda o um html com sender já preenchido
+# manda uma lista de destinatário já disponivel
+# essa tela só vai ter um botão de enviar mensagem depois de preencher
+# todos os campos
+@app.get("/message/{user_name}/new_message")
+async def new_message(user_name: str):
+    print(user_name)
+    if (user_name):
+        return Response(status_code=204)
+    else:
+        raise HTTPException(status_code=404, detail="Item not found")
+
+# Criar um endpois post new_message, que vai receber os dados da mensagem
+# e adicionar no json com o próximo id disponivel
+
+#  as telas de encaminhar mensagem e response vao aproveitar essa de enviar
 
 
 app.add_middleware(

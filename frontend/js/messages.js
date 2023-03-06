@@ -43,8 +43,13 @@ function searchAllMessages(sended = true) {
 
 function onClickRow() {
     let id = this.id;
-    window.location.href = "http://127.0.0.1:8000/message/" + id;
-    // window.location.href = "message_detail.html";
+    name_user = localStorage.getItem("name_user")
+    if (name_user) {
+        window.location.href = `http://127.0.0.1:8000/message/${name_user}/${id}`;
+    } else {
+        alert("Usuário não encontrado!");
+        window.location = "./login.html";
+    } 
 }
 
 function showAllReceivedMessages(messages) {

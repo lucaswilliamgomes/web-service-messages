@@ -1,12 +1,5 @@
 [
     {
-        "id": 1,
-        "name_sender": "lucas",
-        "name_receiver": "matheus",
-        "subject": "Conversa simples",
-        "body": "Ol\u00e1 Matheus, tudo bem?"
-    },
-    {
         "id": 2,
         "name_sender": "matheus",
         "name_receiver": "lucas",

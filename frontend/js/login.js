@@ -9,8 +9,8 @@ function submitForm() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
         if (xhr.status == 200) {
-            user = JSON.parse(xhr.responseText)
-            localStorage.setItem("name_user", user.name)
+            user = JSON.parse(xhr.responseText);
+            localStorage.setItem("name_user", user.name);
             window.location = "./messages.html";
         } else {
             alert("Usuário não encontrado!");
