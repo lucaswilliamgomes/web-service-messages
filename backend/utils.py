@@ -67,4 +67,27 @@ def delete_message_by_id(id_message):
     
     return deleted
 
+
+def find_new_message_id():
+    with open("./data/messages.json", "r") as jsonData:
+        messages = json.load(jsonData)
+
+    return messages[len(messages) - 1]["id"] + 1
+
+
+def create_new_message(message, id):
+    with open("./data/messages.json", "r") as jsonData:
+        messages = json.load(jsonData)
+
+    messages.append({
+        "id": id,
+        "name_sender": message.sender,
+        "name_receiver": message.receiver,
+        "subject": message.subject,
+        "body": message.body
+    })
+
+    with open('./data/messages.json', 'w') as f:
+        json.dump(messages, f, indent=4)
+
     

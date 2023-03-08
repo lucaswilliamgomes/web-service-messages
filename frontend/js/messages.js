@@ -4,6 +4,16 @@ window.onload = function() {
     searchAllMessages(sended = true);
 };
 
+function sentNewMessage() {
+    name_user = localStorage.getItem("name_user")
+    if (name_user) {
+        window.location.href = `http://127.0.0.1:8000/new_message/${name_user}`;
+    } else {
+        alert("Usuário não encontrado!");
+        window.location = "./login.html";
+    }
+}
+
 function getSentMessages() {
     searchAllMessages(sended = true)
 }
@@ -71,10 +81,9 @@ function showAllReceivedMessages(messages) {
     }
 }
 
+document.getElementById("sent-new-message").addEventListener("click", sentNewMessage);
 
-// adiciona um listener de evento para o botão "Mensagens enviadas"
 document.getElementById("sent-messages-button").addEventListener("click", getSentMessages);
 
-// adiciona um listener de evento para o botão "Mensagens recebidas"
 document.getElementById("received-messages-button").addEventListener("click", getReceivedMessages);
   

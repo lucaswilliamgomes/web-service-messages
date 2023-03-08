@@ -101,25 +101,26 @@
     <h2>Detalhes da mensagem</h2>
     <div class="form-group">
         <label for="assunto">Assunto:</label>
-        <input type="text" class="form-control" id="assunto" value={{subject}} {{readonly}}>
+        <input type="text" class="form-control" id="assunto" required value={{subject}} {{readonly}}>
     </div>
     <div class="form-group">
         <label for="remetente">Remetente:</label>
-        <input type="text" class="form-control" id="remetente" value={{sender}} {{readonly}}>
+        <input type="text" class="form-control" id="remetente" required value={{sender}} {{readonly_sender}}>
     </div>
     <div class="form-group">
         <label for="destinatario">Destinatário:</label>
-        <input type="text" class="form-control" id="destinatario" value={{receiver}} {{readonly}}>
+        <input type="text" class="form-control" id="destinatario" required value={{receiver}} {{readonly}}>
     </div>
     <div class="form-group">
         <label for="corpo">Corpo:</label>
-        <textarea class="form-control" rows="10" id="corpo" readonly>{{body}}</textarea>
+        <textarea class="form-control" rows="10" id="corpo" required {{readonly}}>{{body}}</textarea>
     </div>
     <div class="btns">
         <button class="btn" onclick="window.history.back()">Voltar</button>
-        <button class="btn_delete" onclick="deleteMessage()">Deletar Mensagem</button>
-        <button class="btn_forward" onclick="">Encaminhar Mensagem</button>
-        <button class="btn_response" onclick="">Responder Mensagem</button>
+        <button class="btn_delete" {{delete_hidden}} onclick="deleteMessage()">Deletar Mensagem</button>
+        <button class="btn_forward" {{forward_hidden}} onclick="">Encaminhar Mensagem</button>
+        <button class="btn_response" {{response_hidden}} onclick="response_message()">Responder Mensagem</button>
+        <button class="btn_send" {{send_hidden}} onclick="submitForm()">Enviar Mensagem</button>
     </div>
 </div>
 <script>
@@ -140,6 +141,65 @@
 
         xhr.send();
     }
+
+    function response_message() {
+        let xhr = new XMLHttpRequest();
+        let message = getFormInformations();
+        let name_user = message.sender;
+        let URL = "http://127.0.0.1:8000/new_message/" + name_user;
+        URL += '/?response=true'
+            + '?forward=false'
+            + '?sender=' + encodeURIComponent(message.sender) 
+            + '?receiver=' + encodeURIComponent(message.receiver) 
+            + '?subject=' + encodeURIComponent(message.subject)
+            + '?body=' + encodeURIComponent(message.body) 
+
+        xhr.open('GET', URL);
+        xhr.send();
+    }
+
+    function submitForm() {
+        let message = getFormInformations();
+
+        if (message.body.trim() == "" || message.receiver.trim() == "" || message.subject.trim() == "" || message.sender.trim() == "") {
+            alert("Certifique-se de preencher todos os campos da mensagem!");
+            return;
+        }
+
+        let name_user = message.sender;
+        if (!name_user) {
+            alert("Usuário não encontrado!");
+            window.location = "./login.html";
+        }
+
+        let URL = "http://127.0.0.1:8000/new_message/" + name_user;
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", URL, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        let requestBody = JSON.stringify(message);
+        xhr.send(requestBody);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                if (xhr.status == 200) {
+                    alert("mensagem enviada com sucesso!");
+                    window.history.back();
+                } else {
+                    alert("Erro ao enviar mensagem!");
+                }
+            }
+        };
+    }
+
+    function getFormInformations() {
+        let message = {};
+        message.subject = document.querySelector("#assunto").value;
+        message.sender = document.querySelector("#remetente").value;
+        message.receiver = document.querySelector("#destinatario").value;
+        message.body = document.querySelector("#corpo").value;
+        return message;
+    }
+
 </script>
 </body>
 </html>
