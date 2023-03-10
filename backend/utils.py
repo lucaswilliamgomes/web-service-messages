@@ -1,15 +1,27 @@
 import json
 
-responseNotFound = {
-    "statusCode": 404,
-    "data": ""
-}
+
+def register_user_by_name(user_name):
+    with open("data/users.json", "r") as jsonData:
+        data = json.load(jsonData)
+
+    for user in data:
+        if (user.get("name") == user_name):
+            return user
+        
+    data.append({
+        "name": user_name,
+    })
+
+    with open('./data/users.json', 'w') as f:
+        json.dump(data, f, indent=4)
+
+    return True
 
 def search_user_by_name(user_name):
     with open("data/users.json", "r") as jsonData:
         data = json.load(jsonData)
 
-    print (data)
     for user in data:
         if (user.get("name") == user_name):
             return user
@@ -72,7 +84,10 @@ def find_new_message_id():
     with open("./data/messages.json", "r") as jsonData:
         messages = json.load(jsonData)
 
-    return messages[len(messages) - 1]["id"] + 1
+    if (len(messages) > 0):
+        return messages[len(messages) - 1]["id"] + 1
+
+    return 0
 
 
 def create_new_message(message, id):

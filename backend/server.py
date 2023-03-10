@@ -1,6 +1,6 @@
 import utils
 import uvicorn
-from fastapi import FastAPI, HTTPException, Request, Query
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
@@ -19,7 +19,7 @@ origins = [
     "http://127.0.0.1:8080",
     "http://127.0.0.1:3000",
     "http://0.0.0.0:3000",
-    "http://127.0.0.1:5500",
+    "http://127.0.0.1:5500"
 ]
 
 
@@ -48,10 +48,19 @@ def login(user: UserLogin):
         raise HTTPException(status_code=404, detail="Item not found")
 
 
+@app.post("/register")
+def login(user: UserLogin):
+    print(user)
+    response = utils.register_user_by_name(user.name)
+    if (response):
+        return response
+    else: 
+        raise HTTPException(status_code=404, detail="Item not found")
+
+
 @app.post("/messages")
 def message(getMessages: GetMessages):
     type = getMessages.type
-
     if (type == "sended"):
         response = utils.search_messages_sended_by_user(getMessages.name)
     else:
@@ -74,8 +83,10 @@ async def message_details(request: Request, message_id: int, user_name: str):
             "receiver": response.get("name_receiver"),
             "subject": response.get("subject"),
             "body": response.get("body"),
-            "readonly": "readonly",
             "readonly_sender": "readonly",
+            "readonly_subject": "readonly",
+            "readonly_receiver": "readonly",
+            "readonly_body": "readonly",
             "delete_hidden": "hidden" if user_name != response.get("name_sender") else "",
             "forward_hidden": "",
             "response_hidden": "hidden" if user_name == response.get("name_sender") else "",
@@ -94,25 +105,25 @@ async def message_delete(message_id: int):
         raise HTTPException(status_code=404, detail="Item not found")
 
 
-@app.get("/new_message/{user_name}", response_class=HTMLResponse)
+@app.get("/new_message/{user_name}/", response_class=HTMLResponse)
 async def new_message(request: Request, user_name: str,
-                        response: str = Query(None), 
-                        forward: str = Query(None), 
-                        sender: str = Query(None), 
-                        receiver: str = Query(None), 
-                        subject: str = Query(None),
-                        body: str = Query(None)): 
+                        response: str = None, 
+                        forward: str = None, 
+                        sender: str = None, 
+                        receiver: str = None, 
+                        subject: str = None,
+                        body: str = None): 
     
     if (user_name):
-        # Se eu tiver respondendo uma mensagem
         if (response == "true"):
-            print("aloo")
             return templates.TemplateResponse("message_detail.html", {
                 "request" : request,
                 "sender": user_name,
-                "receiver": receiver,
+                "receiver": sender,
                 "subject": subject,
+                "readonly_subject": "readonly",
                 "readonly_sender": "readonly",
+                "readonly_receiver": "readonly",
                 "delete_hidden": "hidden",
                 "forward_hidden": "hidden",
                 "response_hidden": "hidden",
@@ -122,14 +133,14 @@ async def new_message(request: Request, user_name: str,
             return templates.TemplateResponse("message_detail.html", {
                 "request" : request,
                 "sender": user_name,
-                #"receiver": receiver,
                 "subject": subject,
                 "body": body,
+                "readonly_subject": "readonly",
                 "readonly_sender": "readonly",
+                "readonly_body": "readonly",
                 "delete_hidden": "hidden",
                 "forward_hidden": "hidden",
-                "response_hidden": "hidden",
-                "send_hidden": ""
+                "response_hidden": "hidden"
             })
         else:
             return templates.TemplateResponse("message_detail.html", {
@@ -154,8 +165,6 @@ async def new_message(request: Request, message: Message):
         return Response(status_code=200)
     else:
         raise HTTPException(status_code=404, detail="Item not found")
-
-#  as telas de encaminhar mensagem e response vao aproveitar essa de enviar
 
 
 app.add_middleware(
