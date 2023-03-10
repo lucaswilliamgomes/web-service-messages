@@ -1,13 +1,13 @@
 # web service messages
 
 # Pré-requisitos para executar o backend
-* Python 3.10.6 instalado na máquina
+* Python 3.8 ou superior instalado na máquina
 * pip instalado na máquina
 
 ## Criando um ambiente virtual
 1. Abra o terminal e navegue até a pasta do projeto.
-2. Execute o comando python3.10 -m venv env para criar um ambiente virtual com o nome de "env".
-3. Execute o comando source env/bin/activate para ativar o ambiente virtual.
+2. Execute o comando python3 -m venv venv para criar um ambiente virtual com o nome de "venv".
+3. Execute o comando source venv/bin/activate para ativar o ambiente virtual.
 
 ## Instalando as dependências
 1. Certifique-se de estar dentro do ambiente virtual.
@@ -37,7 +37,7 @@ python server.py
 ```
 2. Com o Live Server instalado, localizar o arquivo frontend/html/login.html clicar com o botão direito no arquivo e selecione "Open with Live Server".
 
-![run frontend](./images/liveServer.png){ width=50% }
+![run frontend](./images/liveServer.png)
 
 
 ### Pronto, agora podemos acessar nosso frontend por essa URL.
