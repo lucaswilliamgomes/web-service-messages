@@ -7,7 +7,7 @@ window.onload = function() {
 function sentNewMessage() {
     name_user = localStorage.getItem("name_user")
     if (name_user) {
-        window.location.href = `http://127.0.0.1:8000/new_message/${name_user}`;
+        window.location.href = `http://127.0.0.1:8000/new_message/${name_user}/`;
     } else {
         alert("Usuário não encontrado!");
         window.location = "./login.html";
